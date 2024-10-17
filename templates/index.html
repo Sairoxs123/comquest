@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <center>
+      <h1>
+        {% if error == "done" %}
+        Your school has already registered.
+        {% elif error == "duplicate" %}
+        You registered for the same event more than once.
+        {% endif %}
+      </h1>
+    </center>
+    <div id="form">
+      <form action="{% url 'home' %}" id="regform" method="post">
+        <label>School Name: </label>
+        <input type="text" name="schoolname" id="schoolname" />
+        <br /><br />
+        <label>Teacher in charge contact number: </label
+        ><input type="tel" name="teacher-number" /> <br /><br />
+        <label>How many events will you be participating in: </label>
+        <input type="text" name="number" id="number" oninput="events_add()" />
+        <br /><br />
+        <input type="hidden" name="registered" id="registered" />
+        <div id="main"></div>
+        <input type="submit" value="Register" />
+      </form>
+    </div>
+
+    <script>
+      let events = {
+        "Hot Seat": 3,
+        "Diplomatica": 1,
+        "Trade Titans": 3,
+        "Spark Tank": 3,
+        "Brand Craft": 2,
+      };
+      let registered_events = {};
+
+      const categories_btn_add = (n) => {
+        for (let i = 0; i < Object.keys(events).length; i++) {
+          document.getElementById(`categories${n}`).innerHTML += `
+        <button type="button" id="${n}${
+            Object.keys(events)[i]
+          }" onclick="cat_btn_click(${n}, '${Object.keys(events)[i]}')">
+            ${Object.keys(events)[i]}
+        </button><br><br>`;
+        }
+      };
+
+      const cat_btn_click = (n, cat) => {
+        registered_events[n] = cat;
+        document.getElementById("registered").value =
+          JSON.stringify(registered_events);
+        Object.keys(events).forEach((e, i) => {
+          document.getElementById(`${n}${e}`).style.color = "black";
+        });
+        document.getElementById(`${n}${cat}`).style.color = "yellow";
+        participants_details(n, cat);
+      };
+
+      const participants_details = (n, cat) => {
+        document.getElementById(`participants${n}`).innerHTML = "";
+        const nop = events[cat];
+        for (let i = 0; i < nop; i++) {
+          document.getElementById(
+            `participants${n}`
+          ).innerHTML += `<br><b>Participant ${i + 1}</b>
+            <br><br>
+            <label>Name: </label><input type="text" name="${cat}-p${
+            i + 1
+          }-name"><br><br>
+            <label>Contact: </label><input type="tel" name="${cat}-p${
+            i + 1
+          }-contact"><br>`;
+        }
+      };
+
+      const events_add = () => {
+        let number = document.getElementById("number").value;
+        console.log(number);
+
+        // Clear previous events
+        const event1 = document.getElementById("event1");
+        const event2 = document.getElementById("event2");
+        const event3 = document.getElementById("event3");
+
+        if (event1) {
+          event1.remove();
+        }
+        if (event2) {
+          event2.remove();
+        }
+        if (event3) {
+          event3.remove();
+        }
+
+        if (number == 1) {
+          document.getElementById("main").innerHTML += `<div id="event1">
+        <div id="categories1"></div>
+        <div id="participants1"></div>
+      </div>`;
+          categories_btn_add(1);
+        }
+
+        if (number == 2) {
+          document.getElementById("main").innerHTML += `<div id="event1">
+        <div id="categories1"></div>
+        <div id="participants1"></div>
+      </div>`;
+          categories_btn_add(1);
+          document.getElementById("main").innerHTML += `
+    <div id="event2">
+      <div id="categories2"></div>
+      <div id="participants2"></div>
+    </div>`;
+          categories_btn_add(2);
+        }
+        if (number == 3) {
+          document.getElementById("main").innerHTML += `<div id="event1">
+        <div id="categories1"></div>
+        <div id="participants1"></div>
+      </div>`;
+          categories_btn_add(1);
+          document.getElementById("main").innerHTML += `
+    <div id="event2">
+      <div id="categories2"></div>
+      <div id="participants2"></div>
+    </div>`;
+          categories_btn_add(2);
+          document.getElementById("main").innerHTML += `
+    <div id="event3">
+      <div id="categories3"></div>
+      <div id="participants3"></div>
+    </div>`;
+          categories_btn_add(3);
+        }
+      };
+    </script>
+  </body>
+</html>
