@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 
+
 def has_duplicates(lst):
     seen = set()
     for item in lst:
@@ -9,6 +10,7 @@ def has_duplicates(lst):
             return True  # Duplicate found
         seen.add(item)
     return False  # No duplicates found
+
 
 @csrf_exempt
 def index(request):
@@ -37,24 +39,43 @@ def index(request):
 
         for i in registered_events.values():
             final_data += "<h1><b>" + i + "</b></h1>" + "<br>"
-            #event_details = {}
+            # event_details = {}
             nop = events[i]
             for k in range(nop):
                 name = request.POST.get(f"{i}-p{int(k + 1)}-name")
                 contact = request.POST.get(f"{i}-p{int(k + 1)}-contact")
                 final_data += f"""<b>Participant {k+1}</b><br>
-                Name : {name}
+                Name : {name}<br>
                 Contact: {contact}<br>
                 """
 
-        Registration(school=schoolname, number=number, teacher_contact=teacher_number, details=final_data).save()
+        Registration(
+            school=schoolname,
+            number=number,
+            teacher_contact=teacher_number,
+            details=final_data,
+        ).save()
 
         return redirect("thanks/")
     return render(request, "index.html")
 
+
 def thanks(request):
     return render(request, "thanks.html")
 
-def admin(request):
+def owner(request):
     registered = Registration.objects.all()
-    return render(request, "admin.html", {"registered":registered})
+    if request.session.get("logged_in"):
+        return render(request, "owner.html", {"registered": registered})
+
+    return redirect("/owner/login/")
+
+
+def owner_login(request):
+    if request.method == "POST":
+        if request.POST.get("password") == "comquest@jssps":
+            request.session["logged_in"] = True
+            return redirect("/owner")
+        else:
+            return render(request, "owner_login.html", {"error": "password"})
+    return render(request, "owner_login.html")

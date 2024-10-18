@@ -3,58 +3,102 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Register</title>
     <style>
-        body {
-            text-align: center;
-            display: flexbox;
-        }
-        button {
-            font-size: 1.25em;
-            background-color: rgba(101, 85, 143, 1);
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+      button {
+        font-size: 1.25em;
+        background-color: rgba(101, 85, 143, 1);
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
 
-        .event {
-            background-color: cyan;
-            padding: 1%;
-            margin-bottom: 1%;
-        }
+      .event {
+        background-color: cyan;
+        padding: 1%;
+        margin-top: 2%;
+      }
+
+      .selected {
+        margin-left: 5%;
+        transition: 0.5s ease-in-out;
+      }
+
+      #form {
+        background: rgba(217, 217, 217, 1);
+      }
     </style>
   </head>
-  <body>
+  <body class="bg-gray-300 flex items-center justify-center min-h-screen">
     <center>
-      <h1>
-        {% if error == "done" %}
-        Your school has already registered.
-        {% elif error == "duplicate" %}
-        You registered for the same event more than once.
-        {% endif %}
-      </h1>
+      <h2 style="color: red">
+        {% if error == "done" %} Your school has already registered. {% elif
+        error == "duplicate" %} You registered for the same event more than
+        once. {% endif %}
+      </h2>
     </center>
-    <div id="form">
+    <div class="bg-white w-3/4 p-8 rounded-lg shadow-lg">
+      <div
+        class="bg-purple-700 text-2xl text-white text-center py-2 rounded-full mx-auto mb-8"
+      >
+        CommClave Registration
+      </div>
       <form action="{% url 'home' %}" id="regform" method="post">
-        <label>School Name: </label>
-        <input type="text" name="schoolname" id="schoolname" placeholder="Schoolname: " />
-        <br /><br />
-        <label>Teacher in charge contact number: </label
-        ><input type="tel" name="teacher-number" placeholder="05XXXXXXXX" /> <br /><br />
-        <label>How many events will you be participating in: </label>
-        <input type="text" name="number" id="number" oninput="events_add()" placeholder="Min: 1 Max: 3" />
-        <br /><br />
         <input type="hidden" name="registered" id="registered" />
+        <div
+          class="bg-gradient-to-b from-purple-400 to-green-200 p-8 rounded-lg"
+        >
+          <div class="mb-6">
+            <label class="block text-black text-lg mb-2">1. School Name</label>
+            <input
+              type="text"
+              name="schoolname"
+              id="schoolname"
+              placeholder="Schoolname: "
+              class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100"
+            />
+          </div>
+          <div class="mb-6">
+            <label class="block text-black text-lg mb-2"
+              >2. Teacher Contact</label
+            >
+            <input
+              type="tel"
+              name="teacher-number"
+              placeholder="05XXXXXXXX"
+              class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100"
+            />
+          </div>
+          <div>
+            <label class="block text-black text-lg mb-2"
+              >3. How many events will you participate in</label
+            >
+            <input
+              type="number"
+              name="number"
+              id="number"
+              oninput="events_add()"
+              placeholder="Min: 1 Max: 3"
+              min="1"
+              max="3"
+              class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100"
+            />
+          </div>
+        </div>
         <div id="main"></div>
-        <input type="submit" value="Register" />
+        <div style="display: flex; justify-content: center;">
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full mx-auto mt-4">
+            Register
+          </button>
+        </div>
       </form>
     </div>
 
     <script>
       let events = {
         "Hot Seat": 3,
-        "Diplomatica": 1,
+        Diplomatica: 1,
         "Trade Titans": 3,
         "Spark Tank": 3,
         "Brand Craft": 2,
@@ -66,7 +110,7 @@
           document.getElementById(`categories${n}`).innerHTML += `
         <button type="button" id="${n}${
             Object.keys(events)[i]
-          }" onclick="cat_btn_click(${n}, '${Object.keys(events)[i]}')">
+          }" onclick="cat_btn_click(${n}, '${Object.keys(events)[i]}')" class="bg-purple-700 text-white py-2 px-4 rounded-full">
             ${Object.keys(events)[i]}
         </button><br><br>`;
         }
@@ -77,7 +121,7 @@
         document.getElementById("registered").value =
           JSON.stringify(registered_events);
         Object.keys(events).forEach((e, i) => {
-          document.getElementById(`${n}${e}`).classList.remove("selected")
+          document.getElementById(`${n}${e}`).classList.remove("selected");
         });
         document.getElementById(`${n}${cat}`).classList.add("selected");
         participants_details(n, cat);
@@ -89,12 +133,14 @@
         for (let i = 0; i < nop; i++) {
           document.getElementById(
             `participants${n}`
-          ).innerHTML += `<br><b>Participant ${i + 1}</b>
-            <br><br>
-            <label>Name: </label><input type="text" name="${cat}-p${
+          ).innerHTML += `<br><b><h2 class="font-bold text-lg text-gray-900 mb-4 bg-blue-500 p-4">Participant ${i + 1}</h2></b>
+
+            <label class="block text-black text-lg mb-2">Name: </label>
+            <input class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100" type="text" name="${cat}-p${
             i + 1
           }-name"><br><br>
-            <label>Contact: </label><input type="tel" name="${cat}-p${
+            <label class="block text-black text-lg mb-2">Contact: </label>
+            <input class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100" type="tel" name="${cat}-p${
             i + 1
           }-contact"><br>`;
         }
@@ -120,7 +166,9 @@
         }
 
         if (number == 1) {
-          document.getElementById("main").innerHTML += `<div id="event1" class="event">
+          document.getElementById(
+            "main"
+          ).innerHTML += `<div id="event1" class="event">
         <div id="categories1"></div>
         <div id="participants1"></div>
       </div>`;
@@ -128,7 +176,9 @@
         }
 
         if (number == 2) {
-          document.getElementById("main").innerHTML += `<div id="event1" class="event">
+          document.getElementById(
+            "main"
+          ).innerHTML += `<div id="event1" class="event">
         <div id="categories1"></div>
         <div id="participants1"></div>
       </div>`;
@@ -141,7 +191,9 @@
           categories_btn_add(2);
         }
         if (number == 3) {
-          document.getElementById("main").innerHTML += `<div id="event1" class="event">
+          document.getElementById(
+            "main"
+          ).innerHTML += `<div id="event1" class="event">
         <div id="categories1"></div>
         <div id="participants1"></div>
       </div>`;
