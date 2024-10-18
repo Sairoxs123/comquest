@@ -152,7 +152,7 @@
         document.getElementById("registered").value =
           JSON.stringify(registered_events);
         Object.keys(events).forEach((e, i) => {
-          document.getElementById(`${n}${e}`).classList.remove("bg-yellow-700");
+          document.getElementById(`${n}${e}`).classList.remove("bg-yellow-500");
           document.getElementById(`${n}${e}`).classList.add("bg-purple-700");
           document.getElementById(`${n}${e}`).classList.remove("ml-10");
           document.getElementById(`${n}${e}`).classList.remove("selected");
