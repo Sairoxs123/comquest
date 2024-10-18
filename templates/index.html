@@ -4,8 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <title>Register</title>
     <style>
+      body {
+        font-family: "Source Sans 3", sans-serif;
+      }
       button {
         font-size: 1.25em;
         background-color: rgba(101, 85, 143, 1);
@@ -15,7 +21,7 @@
       }
 
       .event {
-        background-color: cyan;
+        background: linear-gradient(to right, rgba(5, 102, 141, 1), rgba(66, 122, 161, 1), rgba(103, 148, 54, 1));
         padding: 1%;
         margin-top: 2%;
       }
@@ -154,12 +160,10 @@
         Object.keys(events).forEach((e, i) => {
           document.getElementById(`${n}${e}`).classList.remove("bg-yellow-500");
           document.getElementById(`${n}${e}`).classList.add("bg-purple-700");
-          document.getElementById(`${n}${e}`).classList.remove("ml-10");
           document.getElementById(`${n}${e}`).classList.remove("selected");
         });
         document.getElementById(`${n}${cat}`).classList.remove("bg-purple-700");
         document.getElementById(`${n}${cat}`).classList.add("bg-yellow-500");
-        document.getElementById(`${n}${cat}`).classList.add("ml-10");
         document.getElementById(`${n}${cat}`).classList.add("selected");
         participants_details(n, cat);
       };
@@ -172,15 +176,15 @@
             `participants${n}`
           ).innerHTML += `<br><b><h2 class="font-bold text-lg text-white mb-4 bg-blue-500 p-4">Participant ${i + 1}</h2></b>
 
-            <label class="block text-black text-lg mb-2">Full Name: </label>
+            <label class="block text-white text-lg mb-2">Full Name: </label>
             <input class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100" type="text" name="${cat}-p${
             i + 1
           }-name"><br><br>
-            <label class="block text-black text-lg mb-2">Email ID: </label>
+            <label class="block text-white text-lg mb-2">Email ID: </label>
             <input class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100" type="email" name="${cat}-p${
             i + 1
           }-contact"><br><br>
-          <label class="block text-black text-lg mb-2">Grade/Year: </label>
+          <label class="block text-white text-lg mb-2">Grade/Year: </label>
           <input class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100" type="number" name="${cat}-p${
             i + 1
           }-grade"><br>`;
