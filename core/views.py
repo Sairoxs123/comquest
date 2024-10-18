@@ -24,8 +24,11 @@ def index(request):
     if request.method == "POST":
         schoolname = request.POST.get("schoolname")
         registered_events = eval(request.POST.get("registered"))
-        number = len(registered_events)
         teacher_number = request.POST.get("teacher-number")
+
+        if not schoolname or not registered_events or not teacher_number:
+            return render(request, "index.html", {"error": "incomplete"})
+
         try:
             x = Registration.objects.get(school=schoolname)
             return render(request, "index.html", {"error": "done"})
@@ -39,11 +42,12 @@ def index(request):
 
         for i in registered_events.values():
             final_data += "<h1><b>" + i + "</b></h1>" + "<br>"
-            # event_details = {}
             nop = events[i]
             for k in range(nop):
                 name = request.POST.get(f"{i}-p{int(k + 1)}-name")
                 contact = request.POST.get(f"{i}-p{int(k + 1)}-contact")
+                if not name or not contact:
+                    return render(request, "index.html", {"error": "incomplete"})
                 final_data += f"""<b>Participant {k+1}</b><br>
                 Name : {name}<br>
                 Contact: {contact}<br>
@@ -51,7 +55,7 @@ def index(request):
 
         Registration(
             school=schoolname,
-            number=number,
+            number=len(registered_events),
             teacher_contact=teacher_number,
             details=final_data,
         ).save()

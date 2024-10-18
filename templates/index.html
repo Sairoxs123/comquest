@@ -33,9 +33,13 @@
   <body class="bg-gray-300 flex items-center justify-center min-h-screen">
     <center>
       <h2 style="color: red">
-        {% if error == "done" %} Your school has already registered. {% elif
-        error == "duplicate" %} You registered for the same event more than
-        once. {% endif %}
+        {% if error == "done" %}
+          Your school has already registered.
+        {% elif error == "duplicate" %}
+          You registered for the same event more than once.
+        {% elif error == "incomplete" %}
+          The form was not filled completely.
+        {% endif %}
       </h2>
     </center>
     <div class="bg-white w-3/4 p-8 rounded-lg shadow-lg">
