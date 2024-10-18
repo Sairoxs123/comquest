@@ -15,7 +15,9 @@
                 <tr class="bg-blue-200 text-gray-700">
                     <th class="py-3 px-4 text-center border-b border-blue-500">School Name</th>
                     <th class="py-3 px-4 text-center border-b border-blue-500">Number of Events</th>
-                    <th class="py-3 px-4 text-center border-b border-blue-500">Teacher in Charge Contact</th>
+                    <th class="py-3 px-4 text-center border-b border-blue-500">Teacher in Charge</th>
+                    <th class="py-3 px-4 text-center border-b border-blue-500">TIC Contact No.</th>
+                    <th class="py-3 px-4 text-center border-b border-blue-500">TIC Email ID</th>
                     <th class="py-3 px-4 text-center border-b border-blue-500">Details</th>
                 </tr>
             </thead>
@@ -24,7 +26,9 @@
                     <tr class="hover:bg-gray-100 transition duration-200">
                         <td class="py-3 px-4 text-center border-b border-blue-500">{{ i.school }}</td>
                         <td class="py-3 px-4 text-center border-b border-blue-500">{{ i.number }}</td>
-                        <td class="py-3 px-4 text-center border-b border-blue-500">{{ i.teacher_contact }}</td>
+                        <td class="py-3 px-4 text-center border-b border-blue-500">{{ i.teacher_name }}</td>
+                        <td class="py-3 px-4 text-center border-b border-blue-500">{{ i.teacher_mobile }}</td>
+                        <td class="py-3 px-4 text-center border-b border-blue-500">{{ i.teacher_email }}</td>
                         <td class="py-3 px-4 text-center border-b border-blue-500">{{ i.details | safe }}</td>
                     </tr>
                 {% endfor %}

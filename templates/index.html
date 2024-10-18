@@ -23,6 +23,7 @@
       .selected {
         margin-left: 5%;
         transition: 0.5s ease-in-out;
+        background-color: yellow;
       }
 
       #form {
@@ -44,6 +45,10 @@
           {% elif error == "incomplete" %}
             <h2 class="bg-red-500 text-white font-bold rounded-lg px-4 py-2 mb-4">
               The form was not filled completely.
+            </h2>
+          {% elif error == "student_duplicate" %}
+            <h2 class="bg-red-500 text-white font-bold rounded-lg px-4 py-2 mb-4">
+              Same student name has been given multiple times. One student can only participate in 1 event.
             </h2>
           {% endif %}
       </center>
@@ -70,7 +75,17 @@
           </div>
           <div class="mb-6">
             <label class="block text-black text-lg mb-2"
-              >2. Teacher Contact</label
+              >2. Mentor Name</label
+            >
+            <input
+              type="text"
+              name="teacher-name"
+              class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100"
+            />
+          </div>
+          <div class="mb-6">
+            <label class="block text-black text-lg mb-2"
+              >3. Mentor Contact Number</label
             >
             <input
               type="tel"
@@ -79,9 +94,19 @@
               class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100"
             />
           </div>
+          <div class="mb-6">
+            <label class="block text-black text-lg mb-2"
+              >4. Mentor Email ID</label
+            >
+            <input
+              type="email"
+              name="teacher-email"
+              class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100"
+            />
+          </div>
           <div>
             <label class="block text-black text-lg mb-2"
-              >3. How many events will you participate in</label
+              >5. Number Of Events Being Registered For</label
             >
             <input
               type="number"
@@ -105,16 +130,13 @@
     </div>
 
     <script>
-      let events = {
-        "Hot Seat": 3,
-        Diplomatica: 1,
-        "Trade Titans": 3,
-        "Spark Tank": 3,
-        "Brand Craft": 2,
-      };
+      let events = JSON.parse('{{ events | safe }}');
       let registered_events = {};
 
       const categories_btn_add = (n) => {
+        if (Object.keys(events).length == 0) {
+          document.getElementById(`categories${n}`).innerHTML = "<h2>All categories have reached maximum number of participants.</h2>"
+        }
         for (let i = 0; i < Object.keys(events).length; i++) {
           document.getElementById(`categories${n}`).innerHTML += `
         <button type="button" id="${n}${
@@ -130,8 +152,14 @@
         document.getElementById("registered").value =
           JSON.stringify(registered_events);
         Object.keys(events).forEach((e, i) => {
+          document.getElementById(`${n}${e}`).classList.remove("bg-yellow-700");
+          document.getElementById(`${n}${e}`).classList.add("bg-purple-700");
+          document.getElementById(`${n}${e}`).classList.remove("ml-10");
           document.getElementById(`${n}${e}`).classList.remove("selected");
         });
+        document.getElementById(`${n}${cat}`).classList.remove("bg-purple-700");
+        document.getElementById(`${n}${cat}`).classList.add("bg-yellow-500");
+        document.getElementById(`${n}${cat}`).classList.add("ml-10");
         document.getElementById(`${n}${cat}`).classList.add("selected");
         participants_details(n, cat);
       };
@@ -142,16 +170,20 @@
         for (let i = 0; i < nop; i++) {
           document.getElementById(
             `participants${n}`
-          ).innerHTML += `<br><b><h2 class="font-bold text-lg text-gray-900 mb-4 bg-blue-500 p-4">Participant ${i + 1}</h2></b>
+          ).innerHTML += `<br><b><h2 class="font-bold text-lg text-white mb-4 bg-blue-500 p-4">Participant ${i + 1}</h2></b>
 
-            <label class="block text-black text-lg mb-2">Name: </label>
+            <label class="block text-black text-lg mb-2">Full Name: </label>
             <input class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100" type="text" name="${cat}-p${
             i + 1
           }-name"><br><br>
-            <label class="block text-black text-lg mb-2">Contact: </label>
-            <input class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100" type="tel" name="${cat}-p${
+            <label class="block text-black text-lg mb-2">Email ID: </label>
+            <input class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100" type="email" name="${cat}-p${
             i + 1
-          }-contact"><br>`;
+          }-contact"><br><br>
+          <label class="block text-black text-lg mb-2">Grade/Year: </label>
+          <input class="w-full p-2 border border-gray-300 rounded-lg bg-purple-100" type="number" name="${cat}-p${
+            i + 1
+          }-grade"><br>`;
         }
       };
 
