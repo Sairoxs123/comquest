@@ -22,6 +22,8 @@ def index(request):
         "Brand Craft": 2,
     }
     if request.method == "POST":
+        if not request.POST.get("registered"):
+            return render(request, "index.html", {"error": "incomplete"})
         schoolname = request.POST.get("schoolname")
         registered_events = eval(request.POST.get("registered"))
         teacher_number = request.POST.get("teacher-number")
