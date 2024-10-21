@@ -91,6 +91,9 @@ def index(request):
 def thanks(request):
     return render(request, "thanks.html")
 
+def rubric(request):
+    return render(request, "rubric.html")
+
 def owner(request):
     registered = Registration.objects.all()
     if request.session.get("logged_in"):
