@@ -45,12 +45,6 @@ def index(request):
         if not schoolname or not registered_events or not teacher_number:
             return render(request, "index.html", {"error": "incomplete", "events":json.dumps(events)})
 
-        try:
-            x = Registration.objects.get(school=schoolname)
-            return render(request, "index.html", {"error": "done", "events":json.dumps(events)})
-        except:
-            pass
-
         final_data = ""
 
         if has_duplicates(registered_events.values()):
