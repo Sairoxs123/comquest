@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Registration(models.Model):
-    school = models.CharField("School", max_length=100, unique=True)
+    school = models.CharField("School", max_length=100)
     number = models.IntegerField("Number of events", blank=False)
     teacher_name = models.CharField("Teacher Name", max_length=100)
     teacher_mobile = models.CharField("Teacher Mobile", max_length=10)
